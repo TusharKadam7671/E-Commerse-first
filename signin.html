@@ -43,3 +43,54 @@
     </div>
 </body>
 </html>
+
+<script>
+    // 3.first catch the form tag
+    let form=document.querySelector("form");
+
+    //8. first collect the data of users who signed up 
+    let userData=JSON.parse(localStorage.getItem("userData")) || [];
+
+    //4. now add event listner to the form
+    form.addEventListener("submit", function(e){
+        e.preventDefault();
+
+        //5.after clicking on sign in button collect all data here
+        let data={
+            email:form.email.value,
+            password:form.password.value
+        }
+
+        //6.now we have to check the entered data is matches our localstorage data or not
+        //for that create one function named as checksignin 
+        if(checkSignin(data.email,data.password)===true){
+            //if that function returns true value then store login data in localstorafe and give successful alert
+            localStorage.setItem("signin",JSON.stringify(data));
+            alert("Sign In Successful");
+
+            //after successful login page will auto redirect to the index.html i.e. homepage
+            window.location.href="index.html";
+
+        }else{
+            //if wrong input then give alert
+            alert("Wrong Email or Password");
+        }
+
+    })
+
+    //7.create that function here to check email
+    function checkSignin(email,password){
+        //first filter all data from local storage i.e. userData
+        //and on top first call userData from localstorage by json.parse else take empty userdata step 8
+        let filter=userData.filter(function(element){
+            return element.email===email && element.password===password;
+        })
+        if(filter.length>0){
+            //if already present then give true so they can login successfully
+            return true;
+        }else{
+            //not available means they have to sign up first so give false
+            return false;
+        }
+    }
+</script>
