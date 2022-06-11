@@ -41,3 +41,59 @@
     </div>
 </body>
 </html>
+
+<!-- //3.now add javascript -->
+<script>
+    // 4.first add event listner to form submit then call a function
+let form=document.querySelector("form");
+
+//6.we have to check the whether account exist or not and if exists then take data from
+//localstorage else take an empty array
+let userData=JSON.parse(localStorage.getItem("userData")) || [];
+
+form.addEventListener("submit",function(event){
+    event.preventDefault();
+    //5.inside function first collect the all data
+    let data={
+        name:form.name.value,
+        email:form.email.value,
+        password:form.password.value
+    }
+    //to check the data console.log it
+    console.log("data",data);
+
+    //8.now check account with that email id already exist or not for that create one function checkEmails(step-7)
+    //if exists then give alert and if not exist then create account and push the data in userData array
+    //and then store that data to local storage
+
+    if(checkEmails(data.email)===true){
+        userData.push(data);
+        console.log(userData);
+        localStorage.setItem("userData", JSON.stringify(userData));
+    }else{
+        alert("Account Already Exists");
+    }
+
+
+
+});
+
+//7.check the validation of email prior creating new account
+function checkEmails(email){
+    let filtered=userData.filter(function(element){
+        return email===element.email
+        //this filter function filter this userData and returns new array that contains 
+    })
+
+    console.log(filtered);
+
+    //if account with same email exists means filtered array length  should be greater zero and since return false
+    //false so they will be unable to create new account with same email id
+    if(filtered.length>0){
+        return false;
+    }else{
+        //else already not exists then return true so they able to make new account
+        return true;
+    }
+}
+</script>
